@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 def save(driver):
-    save = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div[3]/button[1]')
+    save = driver.find_element(By.CLASS_NAME, 'e19owgy710')
     save.click()
     time.sleep(1)
 
@@ -16,14 +16,14 @@ def reactionTime(driver, loggedIn):
     div.click()
 
     for i in range(0, 5):
-        print("waiting")
         while "view-go" not in div.get_attribute("class"):
             pass
-        print("green")
 
         div.click()
         time.sleep(1)
         div.click()
+
+    time.sleep(1)
 
     if loggedIn:
         save(driver)
@@ -56,12 +56,26 @@ def typing(driver, loggedIn):
 
     div.send_keys(text)
 
+    time.sleep(1)
+
     if loggedIn:
         save(driver)
 
-# TODO
 def aimTrainer(driver, loggedIn):
-    pass
+
+    driver.get("https://humanbenchmark.com/tests/aim")
+    time.sleep(1)
+
+    div = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div[1]/div[2]')
+
+    for i in range(0, 31):
+        target = div.find_elements(By.CLASS_NAME, "e6yfngs4")[1]
+        target.click()
+
+    time.sleep(1)
+
+    if loggedIn:
+        save(driver)
 
 # TODO
 def chimpTest(driver, loggedIn, score):
