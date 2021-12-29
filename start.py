@@ -57,5 +57,5 @@ for i in range(0, int(config["CHIMP_TEST_ROUNDS"])):
     tests.chimpTest(driver, loggedIn, int(config["CHIMP_TEST_SCORE"]))
 
 for i in range(0, int(config["SEQUENCE_MEMORY_ROUNDS"])):
-    tests.sequencyMemory(driver, loggedIn, int(config["SEQUENCE_MEMORY_SCORE"]))
+    tests.sequenceMemory(driver, loggedIn, int(config["SEQUENCE_MEMORY_SCORE"]))
 

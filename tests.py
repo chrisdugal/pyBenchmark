@@ -82,5 +82,5 @@ def chimpTest(driver, loggedIn, score):
     pass
 
 # TODO
-def sequencyMemory(driver, loggedIn, score):
+def sequenceMemory(driver, loggedIn, score):
     pass
