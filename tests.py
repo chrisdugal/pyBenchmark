@@ -1,8 +1,8 @@
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 def save(driver):
+
     save = driver.find_element(By.CLASS_NAME, 'e19owgy710')
     save.click()
     time.sleep(1)
@@ -28,9 +28,47 @@ def reactionTime(driver, loggedIn):
     if loggedIn:
         save(driver)
 
-# TODO
 def visualMemory(driver, loggedIn, score):
-    pass
+
+    driver.get("https://humanbenchmark.com/tests/memory")
+    time.sleep(1)
+
+    start = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/button')
+    start.click()
+
+    container = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/div')
+
+    for i in range(0, score):
+        html = container.get_attribute('outerHTML')
+        while "active" not in html:
+            html = container.get_attribute('outerHTML')
+
+        tile_htmls = html.split("eut2yre1")[:-1]
+        flashed = ["active" in tile_html for tile_html in tile_htmls]
+
+        time.sleep(1.5)
+
+        tiles = container.find_elements(By.CLASS_NAME, "eut2yre1")
+        for idx, tile in enumerate(tiles):
+            if flashed[idx]:
+                tile.click()
+
+        time.sleep(1)
+
+    losses = 0
+    while losses < 3:
+        time.sleep(3)
+        tiles = container.find_elements(By.CLASS_NAME, "eut2yre1")
+        for tile in tiles:
+            tile.click()
+            if len(container.find_elements(By.CLASS_NAME, "error")) == 3:
+                losses += 1
+                break
+
+    time.sleep(1)
+
+    if loggedIn:
+        save(driver)
 
 # TODO
 def numberMemory(driver, loggedIn, score):
