@@ -175,9 +175,33 @@ def aimTrainer(driver, loggedIn):
     if loggedIn:
         save(driver)
 
-# TODO
 def chimpTest(driver, loggedIn, score):
-    pass
+
+    driver.get("https://humanbenchmark.com/tests/chimp")
+    time.sleep(1)
+
+    start = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div[1]/div[2]/button')
+    start.click()
+
+    for i in range(0, score - 4):
+        for j in range(1, i+5):
+            driver.find_element(By.CSS_SELECTOR, f"[data-cellnumber='{j}']").click()
+
+        cont = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div[1]/div[3]/button')
+        cont.click()
+
+    if score < 41:
+        for i in range(0, 3):
+            driver.find_element(By.CSS_SELECTOR, "[data-cellnumber='2']").click()
+
+            if i < 2:
+                cont = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div[1]/div[3]/button')
+                cont.click()
+
+    time.sleep(1)
+
+    if loggedIn:
+        save(driver)
 
 # TODO
 def sequenceMemory(driver, loggedIn, score):
