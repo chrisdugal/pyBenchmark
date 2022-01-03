@@ -40,7 +40,7 @@ def visualMemory(driver, loggedIn, score):
 
     container = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/div')
 
-    for i in range(0, score):
+    for i in range(0, score-1):
         html = container.get_attribute('outerHTML')
         while "active" not in html:
             html = container.get_attribute('outerHTML')
@@ -57,15 +57,24 @@ def visualMemory(driver, loggedIn, score):
 
         time.sleep(1)
 
-    losses = 0
-    while losses < 3:
-        time.sleep(3)
+    for i in range(0, 3):
+        html = container.get_attribute('outerHTML')
+        while "active" not in html:
+            html = container.get_attribute('outerHTML')
+
+        tile_htmls = html.split("eut2yre1")[:-1]
+        flashed = ["active" in tile_html for tile_html in tile_htmls]
+
+        time.sleep(1.5)
+
         tiles = container.find_elements(By.CLASS_NAME, "eut2yre1")
-        for tile in tiles:
-            tile.click()
+        for idx, tile in enumerate(tiles):
+            if not flashed[idx]:
+                tile.click()
             if len(container.find_elements(By.CLASS_NAME, "error")) == 3:
-                losses += 1
                 break
+
+        time.sleep(2)
 
     time.sleep(1)
 
@@ -80,7 +89,7 @@ def numberMemory(driver, loggedIn, score):
     start = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[3]/button')
     start.click()
 
-    for i in range(0, score):
+    for i in range(0, score-1):
         number = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[1]').text
 
         field = WebDriverWait(driver, 10 + i*2).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/form/div[2]/input')))
