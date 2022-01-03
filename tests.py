@@ -203,6 +203,40 @@ def chimpTest(driver, loggedIn, score):
     if loggedIn:
         save(driver)
 
-# TODO
 def sequenceMemory(driver, loggedIn, score):
-    pass
+
+    driver.get("https://humanbenchmark.com/tests/sequence")
+    time.sleep(1)
+
+    start = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/button')
+    start.click()
+
+    div = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/div')
+
+    for i in range(0, score-1):
+        tiles = {}
+
+        for j in range(0, i+1):
+            tile = WebDriverWait(div, 10).until(EC.visibility_of_element_located((By.CLASS_NAME, "active")))
+            tiles[j] = tile
+            time.sleep(0.5)
+
+        for tile in tiles:
+            tiles[tile].click()
+
+    first = {}
+    for i in range(0, score):
+        if i == 0:
+            first = WebDriverWait(div, 10).until(EC.visibility_of_element_located((By.CLASS_NAME, "active")))
+        time.sleep(0.5)
+
+    tiles = div.find_elements(By.CLASS_NAME, "square")
+    for tile in tiles:
+        if tile != first:
+            tile.click()
+            break
+
+    time.sleep(1)
+
+    if loggedIn:
+        save(driver)
