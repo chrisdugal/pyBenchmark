@@ -1,5 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def save(driver):
 
@@ -70,9 +72,38 @@ def visualMemory(driver, loggedIn, score):
     if loggedIn:
         save(driver)
 
-# TODO
 def numberMemory(driver, loggedIn, score):
-    pass
+
+    driver.get("https://humanbenchmark.com/tests/number-memory")
+    time.sleep(1)
+
+    start = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[3]/button')
+    start.click()
+
+    for i in range(0, score):
+        number = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[1]').text
+
+        field = WebDriverWait(driver, 10 + i*2).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/form/div[2]/input')))
+        field.send_keys(number)
+
+        submit = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/form/div[3]/button')
+        submit.click()
+
+        time.sleep(0.5)
+
+        next = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/button')
+        next.click()
+
+    field = WebDriverWait(driver, 10 + score*2).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/form/div[2]/input')))
+    field.send_keys('L')
+
+    submit = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/form/div[3]/button')
+    submit.click()
+
+    time.sleep(1)
+
+    if loggedIn:
+        save(driver)
 
 # TODO
 def verbalMemory(driver, loggedIn, score):
