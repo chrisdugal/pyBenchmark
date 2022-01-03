@@ -105,9 +105,38 @@ def numberMemory(driver, loggedIn, score):
     if loggedIn:
         save(driver)
 
-# TODO
 def verbalMemory(driver, loggedIn, score):
-    pass
+
+    driver.get("https://humanbenchmark.com/tests/verbal-memory")
+    time.sleep(1)
+
+    start = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[4]/button')
+    start.click()
+
+    words = {}
+
+    for i in range(0, score):
+        word = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/div').text
+
+        if word in words:
+            driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[3]/button[1]').click()
+        else:
+            words[word] = 1
+            driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[3]/button[2]').click()
+
+    for i in range(0, 3):
+        word = driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[2]/div').text
+
+        if word in words:
+            driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[3]/button[2]').click()
+        else:
+            words[word] = 1
+            driver.find_element(By.XPATH, '//*[@id="root"]/div/div[4]/div[1]/div/div/div/div[3]/button[1]').click()
+
+    time.sleep(1)
+
+    if loggedIn:
+        save(driver)
 
 def typing(driver, loggedIn):
 
