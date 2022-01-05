@@ -226,7 +226,7 @@ def sequenceMemory(driver, loggedIn, score):
         tiles = {}
 
         for j in range(0, i+1):
-            tile = WebDriverWait(div, 10).until(EC.visibility_of_element_located((By.CLASS_NAME, "active")))
+            tile = WebDriverWait(div, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "active")))
             tiles[j] = tile
             time.sleep(0.5)
 
@@ -236,7 +236,7 @@ def sequenceMemory(driver, loggedIn, score):
     first = {}
     for i in range(0, score):
         if i == 0:
-            first = WebDriverWait(div, 10).until(EC.visibility_of_element_located((By.CLASS_NAME, "active")))
+            first = WebDriverWait(div, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "active")))
         time.sleep(0.5)
 
     tiles = div.find_elements(By.CLASS_NAME, "square")
